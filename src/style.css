@@ -1,0 +1,40 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color:deepskyblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.info {
+    font-size: 36px;
+    text-align: center;
+    width: min(25vw, 25vh);
+    height: auto;
+    background-color: grey;
+    border: 2px solid darkgray;
+
+}
+
+.game-board {
+    background-color: lightblue;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.game-board > div {
+    display: flex;
+    gap: 1px;
+}
+
+.cell {
+    width: min(80vw, 3vh);
+    height: min(80vw, 3vh);
+    background-color: skyblue;
+    border: 2px solid deepskyblue;
+    flex: 1 1 auto;
+}
