@@ -1,5 +1,3 @@
-import Ship from "./ship.js";
-
 const GameBoard = (() => {
     const SHIP_INVALID_POSITION = -1;
     const SHIP_ADDED = 0;
