@@ -41,9 +41,24 @@ const GameBoard = (() => {
             return !(0 <= coords[0] && coords[0] < size && 0 <= coords[1] && coords[1] < size);
         }
 
+        const _isAdjacentToShip = (coords) => {
+            for (const delta of [[0, 1], [0, -1], [1, 0], [-1, 0]]) {
+                let neighbourRow = coords[0] + delta[0];
+                let neighbourCol = coords[1] + delta[1];
+                if (!_outOfRange([neighbourRow, neighbourCol])) {
+                    if (_grid[neighbourRow][neighbourCol].ship) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         const _invalidShipPosition = (startRow, startCol, direction, ship) => {
             for (let coords of getShipCoords(startRow, startCol, direction, ship)) {
-                if (_outOfRange(coords) || _grid[coords[0]][coords[1]].ship) {
+                if (_outOfRange(coords)
+                    || _grid[coords[0]][coords[1]].ship
+                    || _isAdjacentToShip(coords)) {
                     return true;
                 }
             }

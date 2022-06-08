@@ -59,14 +59,27 @@ const Dom = (() => {
         document.body.appendChild(computerTitle);
         document.body.appendChild(computerBoard);
 
-        startGame(infoDiv, userBoard, computerBoard);
+        startGame(headerDiv, infoDiv, userBoard, computerBoard);
     };
 
-    const startGame = (infoDiv, userBoard, computerBoard) => {
+    const startGame = (headerDiv, infoDiv, userBoard, computerBoard) => {    
+        let direction = constants.DIRECTION_ROW;
+        const directionButton = document.createElement('input');        
+        directionButton.type = 'button';
+        directionButton.value = 'Direction: Horizontal';
+        directionButton.addEventListener('click', (e) => {
+            if (directionButton.value == 'Direction: Horizontal') {
+                directionButton.value = 'Direction: Vertical';
+                direction = constants.DIRECTION_COL;
+            } else {
+                directionButton.value = 'Direction: Horizontal';
+                direction = constants.DIRECTION_ROW;
+            }
+        });
+        headerDiv.appendChild(directionButton);
+
         let index = 0;
         infoDiv.innerText = `Place your ${SHIP_REQUESTS[index]['name']}`;
-        let direction = constants.DIRECTION_ROW;
-
         const playerBoard = makeGameBoard(BOARD_SIZE);
         for (const gridRow of userBoard.children) {
             for (const cell of gridRow.children) {
@@ -82,11 +95,10 @@ const Dom = (() => {
                             if (index < SHIP_REQUESTS.length) {
                                 infoDiv.innerText = `Place your ${SHIP_REQUESTS[index]['name']}`;
                             } else {
+                                directionButton.remove();
                                 startRound(infoDiv, userBoard, computerBoard, playerBoard);
                             }
-                        } else {
-                            console.log(result);
-                        }
+                        } 
                     }
                 });
             }
