@@ -28,9 +28,11 @@ const GameBoard = (() => {
         for (let i = 0; i < size; i++) {
             let row = [];
             for (let j = 0; j < size; j++) {
-                row.push({attacked: false,
-                        ship: null,
-                        shipSegment: null});
+                row.push({
+                    attacked: false,
+                    ship: null,
+                    shipSegment: null
+                });
             }
             _grid.push(row);
         }
@@ -39,24 +41,8 @@ const GameBoard = (() => {
             return !(0 <= coords[0] && coords[0] < size && 0 <= coords[1] && coords[1] < size);
         }
 
-        const _getShipCoords = (startRow, startCol, direction, ship) => {
-            const result = [];
-            const shipLength = ship.getLength();
-            let row = startRow;
-            let col = startCol;
-            for (let i = 0; i < shipLength; i++) {
-                result.push([row, col]);
-                if (direction == DIRECTION_COL) { // To place the ship along a column, increase row number 
-                    row += 1;
-                } else {
-                    col += 1;
-                }
-            }
-            return result;
-        };
-
         const _invalidShipPosition = (startRow, startCol, direction, ship) => {
-            for (let coords of _getShipCoords(startRow, startCol, direction, ship)) {
+            for (let coords of getShipCoords(startRow, startCol, direction, ship)) {
                 if (_outOfRange(coords) || _grid[coords[0]][coords[1]].ship) {
                     return true;
                 }
@@ -65,13 +51,15 @@ const GameBoard = (() => {
         };
 
         const addShip = (startRow, startCol, direction, ship) => {
+            startRow = Number(startRow);
+            startCol = Number(startCol);
             if (!(ship.hit && ship.getLength && ship.isSunk)) {
                 throw new Error(`Invalid ship object ${ship}`);
             } else if (_invalidShipPosition(startRow, startCol, direction, ship)) {
                 return SHIP_INVALID_POSITION;
             } else {
-                let coords = _getShipCoords(startRow, startCol, direction, ship);
-                for (let i = 0; i < coords.length; i++ ) {
+                let coords = getShipCoords(startRow, startCol, direction, ship);
+                for (let i = 0; i < coords.length; i++) {
                     let row = coords[i][0];
                     let col = coords[i][1];
                     _grid[row][col].ship = ship;
@@ -114,8 +102,26 @@ const GameBoard = (() => {
         return { addShip, receiveAttack, allShipsSunk }
     }
 
-    return { makeGameBoard, constants }
-}) ();
+    const getShipCoords = (startRow, startCol, direction, ship) => {
+        startRow = Number(startRow);
+        startCol = Number(startCol);
+        const result = [];
+        const shipLength = ship.getLength();
+        let row = startRow;
+        let col = startCol;
+        for (let i = 0; i < shipLength; i++) {
+            result.push([row, col]);
+            if (direction == DIRECTION_COL) { // To place the ship along a column, increase row number 
+                row += 1;
+            } else {
+                col += 1;
+            }
+        }
+        return result;
+    };
+
+    return { makeGameBoard, getShipCoords, constants }
+})();
 
 export { GameBoard };
 

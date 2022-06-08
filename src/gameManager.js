@@ -4,30 +4,12 @@ import { GameBoard } from "./gameBoard";
 const GameManager = (() => {
     const { makeGameBoard, constants } = GameBoard;
 
-    const makeGame = (details) => {
-        const _initialise = (details) => {
-            if (!(details['player1'] && details['player2'] && details['boardSize'])) {
-                throw new Error(`Missing game details`);
-            } else if (details['player1'].length === 0 || details['player2'].length === 0) {
+    const makeGame = (player1Board, player2Board) => {
+        const _initialise = (player1Board, player2Board) => {
+            if (player1Board.allShipsSunk() || player2Board.allShipsSunk()) {
                 throw new Error('Player has no starting ships');
             }
-            const players = {}
-            for (const playerNum of ['player1', 'player2']) {
-                let gameBoard = makeGameBoard(details['boardSize']);
-                for (const ship of details[playerNum]) {
-                    let shipLength = ship['shipLength'];
-                    let startRow = ship['startRow'];
-                    let startCol = ship['startCol'];
-                    let direction = ship['direction'];
-                    if (shipLength === undefined || startRow === undefined
-                        || startCol === undefined || direction === undefined) {
-                        throw new Error('Missing ship details');
-                    }
-                    gameBoard.addShip(startRow, startCol, direction, Ship.makeShip(shipLength));
-                }
-                players[playerNum] = gameBoard;
-            }
-            return players;
+            return {'player1': player1Board, 'player2': player2Board};
         }
 
         const attack = (target, row, col) => {
@@ -51,7 +33,7 @@ const GameManager = (() => {
             return _winner;
         }
 
-        const _players = _initialise(details);
+        const _players = _initialise(player1Board, player2Board);
         let _currTarget = 'player1';
         let _winner = null;
         
