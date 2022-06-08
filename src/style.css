@@ -8,14 +8,16 @@ body {
     gap: 20px;
 }
 
-.info {
+.header {
     font-size: 36px;
     text-align: center;
-    width: min(25vw, 25vh);
     height: auto;
     background-color: grey;
     border: 2px solid darkgray;
-
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .game-board {
@@ -37,4 +39,20 @@ body {
     background-color: skyblue;
     border: 2px solid deepskyblue;
     flex: 1 1 auto;
+}
+
+.cell.ship {
+    background-color: grey;
+}
+
+.cell.hidden {
+    background-color: skyblue;
+}
+
+.cell.attacked {
+    background-color: yellow;
+}
+
+.cell.attacked.ship {
+    background-color: red;
 }

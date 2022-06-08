@@ -43,37 +43,6 @@ test('test game manager to accept proper initialisation', () => {
     expect(GameManager.makeGame(makeTripleShipBoard(), makeTripleShipBoard()));
 });
 
-
-test('test game manager to reject out of range attack', () => {
-    const game = GameManager.makeGame(makeTripleShipBoard(), makeTripleShipBoard());
-    const invalidAttack = () => {
-        game.attack('player1', 2, 10);
-    }
-
-    expect(invalidAttack).toThrow();
-});
-
-test('test game manager to reject double attack on same player', () => {
-    const game = GameManager.makeGame(makeTripleShipBoard(), makeTripleShipBoard());
-    const invalidAttack = () => {
-        game.attack('player1', 2, 5);
-        game.attack('player1', 4, 5);
-    }
-
-    expect(invalidAttack).toThrow();
-});
-
-test('test game manager to reject attack in same position', () => {
-    const game = GameManager.makeGame(makeTripleShipBoard(), makeTripleShipBoard());
-    const invalidAttack = () => {
-        game.attack('player1', 2, 3);
-        game.attack('player2', 5, 6);
-        game.attack('player1', 2, 3);
-    }
-
-    expect(invalidAttack).toThrow();
-});
-
 test('test game manager to detect win game', () => {
     const game = GameManager.makeGame(makeSingleShipBoard(), makeSingleShipBoard());
     game.attack('player1', 0, 1);

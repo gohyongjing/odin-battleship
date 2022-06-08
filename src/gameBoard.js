@@ -69,6 +69,10 @@ const GameBoard = (() => {
             }
         };
 
+        const hasShip = (row, col) => {
+            return Boolean(_grid[row][col]['ship']);
+        };
+
         const receiveAttack = (row, col) => {
             if (_outOfRange([row, col]) || _grid[row][col].attacked) {
                 return ATTACK_INVALID;
@@ -99,7 +103,7 @@ const GameBoard = (() => {
             return true;
         };
 
-        return { addShip, receiveAttack, allShipsSunk }
+        return { addShip, hasShip, receiveAttack, allShipsSunk }
     }
 
     const getShipCoords = (startRow, startCol, direction, ship) => {
