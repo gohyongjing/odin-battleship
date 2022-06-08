@@ -8,7 +8,10 @@ const Dom = (() => {
 
     const BOARD_SIZE = 10;
     const SHIP_REQUESTS = [{ 'name': 'Patrol Boat', 'length': 2 },
-    { 'name': 'Battleship', 'length': 4 }];
+                            { 'name': 'Submarine', 'length': 3 },
+                            { 'name': 'Destroyer', 'length': 3 },
+                            { 'name': 'Battleship', 'length': 4 },
+                            { 'name': 'Carrier', 'length': 5 }];
 
     const _addCells = (div, size) => {
         for (let i = 0; i < size; i++) {
@@ -160,9 +163,16 @@ const Dom = (() => {
 
     const computerPlay = (game, computer, infoDiv, userBoardDiv) => {
         let computerMove = computer.makeMove();
-        game.attack('player1', computerMove[0], computerMove[1]);
+        let attackResult = game.attack('player1', computerMove[0], computerMove[1]);
         userBoardDiv.children[computerMove[0]].children[computerMove[1]].classList.add('attacked');
-        infoDiv.innerText += "Computer fires!\n";
+        infoDiv.innerText += "Computer fires";
+        if (attackResult === constants.ATTACK_MISSED) {
+            infoDiv.innerText += " and miss!\n";
+        } else if (attackResult === constants.ATTACK_HIT_SHIP) {
+            infoDiv.innerText += " and hit a ship!\n";
+        } else if (attackResult === constants.ATTACK_SUNK_SHIP) {
+            infoDiv.innerText += " and sink a ship!\n";
+        }
     };
 
     const endGame = (infoDiv, game) => {

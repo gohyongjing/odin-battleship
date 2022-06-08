@@ -59,7 +59,7 @@ input[type='button'] {
 }
 
 .cell.attacked {
-    background-color: yellow;
+    background-color:khaki;
 }
 
 .cell.attacked.ship {
